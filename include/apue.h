@@ -36,4 +36,27 @@ typedef void Sigfunc(int); /* for signal handlers */
 #define SIG_ERR((Sigfunc *) -1)
 #endif
 
+#define min(a,b) ((a) < (b) ? (a) : (b))
+#define max(a,b) ((a) > (b) ? (a) : (b)) 
+
+/*
+ * Prototypes for own fuctions
+ */
+char        *path_alloc(int *);
+long        open_max(void);
+void        clr_fl(int, int);
+void        set_fl(int, int);
+void        pr_exit(int);
+void        pr_mask(const char *);
+Singfunc    *signal_intr(int, Sigfunc *);
+
+int         tty_cbreak(int);
+int         tty_raw(int);
+int         tty_reset(int);
+int         tty_atexit(void);
+#ifdef ECHO     /* only if <termios.h> has been included. */
+struct termios *tty_termios(void);
+#endif
+
+
 #endif
