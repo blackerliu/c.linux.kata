@@ -1,4 +1,4 @@
 LearningC
 =========
 
-Learing Computer
+Learing APUE on Linux OS
