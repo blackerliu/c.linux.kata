@@ -58,5 +58,62 @@ int         tty_atexit(void);
 struct termios *tty_termios(void);
 #endif
 
+void		sleep_us(unsigned int);
+ssize_t 	readn(int, void *, size_t);
+ssize_t 	writen(int, const void *, size_t);
+void		daemonize(const char *);
 
+int		s_pipe(int *);
+int 		recv_fd(int, ssize_t (*func)(int, const void *, size_t));
+int		send_fd(int, int);
+int		send_err(int, int, const char *);
+int		serv_listen(const char *);
+int		serv_accept(int, uid_t *);
+int		cli_conn(const char *);
+int 		buf_args(char *, int (*func)(int, char **));
+int 		ptym_open(char *, int);
+int		ptys_open(char *);
+#ifdef TIOCGWINSZ
+pid_t		pty_fork(int *, char *, int, const struct termios *, const struct winsize *);
 #endif
+
+int		lock_reg(int, int, int, off_t, int, off_t);
+#define  read_lock(fd, offset, whence, len) \
+		lock_reg((fd), F_SETLK, F_RDLCK, (offset), (whence), (len))
+#define  readw_lock(fd, offset, whence, len) \
+		lock_reg((fd), F_SETLKW, F_RDLCK, (offset), (whence), (len))
+#define  write_lock(fd, offset, whence, len) \
+		lock_reg((fd), F_SETLK, F_RWLCK, (offset), (whence), (len))	
+#define  writew_lock(fd, offset, whence, len) \
+		lock_reg((fd), F_SETLKW, F_RWLCK, (offset), (whence), (len))	
+#define  un_lock(fd, offset, whence, len) \
+		lock_reg((fd), F_SETLK, F_UNLCK, (offset), (whence), (len))
+
+pit_t		lock_test(int, int, off_t, int, off_t);
+
+#define  is_read_lockable(fd, offset, whence, len) \
+		(lock_test((fd), F_RDCLK, (offset), (whence), (len)) == 0)
+#define  is_write_lockable(fd, offset, whence, len) \
+		(lock_test((fd), F_WRCLK, (offset), (whence), (len)) == 0)
+
+
+void 		err_dump(const char *, ...);
+void		err_msg(const char *, ...);
+void		err_quit(const char *, ...)
+void		err_exit(int, const char *, ...);
+void		err_ret(const char *, ...);
+void		err_sys(const char *, ...);
+
+void		log_msg(const char *, ...);
+void		log_open(const char *, int, int);
+void		log_quit(const char *, ...);
+void		log_ret(const char *, ...);
+void		log_sys(const char *, ...);
+
+void		TELL_WAIT(void);
+void		TELL_PARENT(pid_t);
+void		TELL_CHILD(pit_t);
+void		WAIT_PARENT(void);
+void		WAIT_CHILD(void);
+
+#endif /* _APUE_H */
