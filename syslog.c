@@ -7,7 +7,7 @@
 #include <stdarg.h>     /* ISO C variable arguments */
 #include <syslog.h>
 
-static void log_doit(int, int, const char *, valist ap);
+static void log_doit(int, int, const char *, va_list ap);
 
 /*
  * Caller must define and set this: nonzero if
@@ -88,7 +88,7 @@ void log_quit(const char *fmt, ...)
  */
 static void log_doit(int errnoflag, int priority, const char *fmt, va_list ap)
 {
-    int     error_save;
+    int     errno_save;
     char    buf[MAXLINE];
     
     errno_save = errno;     /* value caller might want printed */

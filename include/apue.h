@@ -8,7 +8,7 @@
 #include <sys/termios.h>
 
 #ifndef TIOCGWINSZ
-#include <sys/ioctl.n>
+#include <sys/ioctl.h>
 #endif
 
 #include <stdio.h>
@@ -48,7 +48,7 @@ void        clr_fl(int, int);
 void        set_fl(int, int);
 void        pr_exit(int);
 void        pr_mask(const char *);
-Singfunc    *signal_intr(int, Sigfunc *);
+Sigfunc    *signal_intr(int, Sigfunc *);
 
 int         tty_cbreak(int);
 int         tty_raw(int);
@@ -89,7 +89,7 @@ int		lock_reg(int, int, int, off_t, int, off_t);
 #define  un_lock(fd, offset, whence, len) \
 		lock_reg((fd), F_SETLK, F_UNLCK, (offset), (whence), (len))
 
-pit_t		lock_test(int, int, off_t, int, off_t);
+pid_t		lock_test(int, int, off_t, int, off_t);
 
 #define  is_read_lockable(fd, offset, whence, len) \
 		(lock_test((fd), F_RDCLK, (offset), (whence), (len)) == 0)
@@ -99,7 +99,7 @@ pit_t		lock_test(int, int, off_t, int, off_t);
 
 void 		err_dump(const char *, ...);
 void		err_msg(const char *, ...);
-void		err_quit(const char *, ...)
+void		err_quit(const char *, ...);
 void		err_exit(int, const char *, ...);
 void		err_ret(const char *, ...);
 void		err_sys(const char *, ...);
@@ -112,7 +112,7 @@ void		log_sys(const char *, ...);
 
 void		TELL_WAIT(void);
 void		TELL_PARENT(pid_t);
-void		TELL_CHILD(pit_t);
+void		TELL_CHILD(pid_t);
 void		WAIT_PARENT(void);
 void		WAIT_CHILD(void);
 
