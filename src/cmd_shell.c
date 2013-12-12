@@ -23,7 +23,7 @@ int main(void)
         }
         
         /* parent */
-        if((pid = waitpid(pid, &status, 0) < 0){
+        if((pid = waitpid(pid, &status, 0)) < 0){
             err_sys("waitpid error");
         }
         
