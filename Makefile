@@ -6,17 +6,19 @@ NM	=$(CROSS_PREFIX)nm
 RANLIB	=$(CROSS_PREFIX)ranlib
 
 CFLAGS  += -I./include
+CFLAGS	+= $(EXTRA_CFLAGS)
 
 LDFLAGS += -static
 LDFLAGS += -L.
 LDFLAGS += -lapue
 LDFLAGS += -lc
-
-CFLAGS	+= $(EXTRA_CFLAGS)
 LDFLAGS	+= $(EXTRA_LDFLAGS)
 
 LIB_APUE=libapue.a
 OBJ_APUE=syserr.o syslog.o
+
+LIB_CSPP=libcspp.a
+OBJ_CSPP=
 
 DIR_OUTPUT=output
 DIR_BIN=bin
@@ -28,6 +30,7 @@ FILES_BIN=$(shell echo $(FILES_SRC) | sed 's/\.c//g')
 
 build: $(LIB_APUE) $(FILES_OBJ) 
 	@echo "Generate command ..."
+	@mkdir -p $(DIR_BIN)
 	@for each_bin in $(FILES_BIN); do \
 		echo "Command:" $$each_bin; \
 		$(CC) $(DIR_OUTPUT)/$$each_bin.o $(DIR_OUTPUT)/syserr.o $(CFLAGS) -o $(DIR_BIN)/$$each_bin;\
