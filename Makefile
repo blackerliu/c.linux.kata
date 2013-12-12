@@ -55,7 +55,7 @@ syslog.o: syslog.c
 	$(CC) $(CFLAGS) -c -o $(DIR_OUTPUT)/$@ $<
 
 clean:
-	@rm -f *.o *.a *.elf
+	@rm -f *.o *.a *.tmp
 	@rm -f $(DIR_BIN)/*
 	@rm -rf $(DIR_OUTPUT)
 
