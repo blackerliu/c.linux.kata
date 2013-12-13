@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 	int val;
 	
 	if(argc != 2){
-		err_quit("usage: argv[0] < descriptor#");
+		err_quit("usage: %s < descriptor#", argv[0]);
 	}
 
 	if((val = fcntl(atoi(argv[1]), F_GETFL, 0)) < 0){
