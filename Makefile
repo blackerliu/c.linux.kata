@@ -10,8 +10,9 @@ CFLAGS	+= $(EXTRA_CFLAGS)
 
 LDFLAGS += -static
 LDFLAGS += -L.
+LDFLAGS += -lpthread
+LDFLAGS += -lc 
 LDFLAGS += -lapue
-LDFLAGS += -lc -lpthread
 LDFLAGS	+= $(EXTRA_LDFLAGS)
 
 LIB_APUE=libapue.a
@@ -28,13 +29,7 @@ FILES_SRC=$(shell cd src; ls *.c)
 FILES_OBJ=$(shell echo $(FILES_SRC) | sed 's/\.c/\.o/g')
 FILES_BIN=$(shell echo $(FILES_SRC) | sed 's/\.c//g')
 
-build: $(LIB_APUE) $(FILES_OBJ) 
-	@echo "Generate command ..."
-	@mkdir -p $(DIR_BIN)
-	@for each_bin in $(FILES_BIN); do \
-		echo "Command:" $$each_bin; \
-		$(CC) $(DIR_OUTPUT)/$$each_bin.o $(DIR_OUTPUT)/syserr.o $(CFLAGS) -o $(DIR_BIN)/$$each_bin;\
-	done;
+all: $(LIB_APUE) $(FILES_BIN)
 
 obj_apue_with_path=$(foreach each_obj,$(OBJ_APUE),$(DIR_OUTPUT)/$(each_obj))
 $(LIB_APUE): syserr.o syslog.o
@@ -43,19 +38,15 @@ $(LIB_APUE): syserr.o syslog.o
 
 syserr.o: syserr.c
 	@mkdir -p $(DIR_OUTPUT)
-	$(CC) $(CFLAGS) -o $(DIR_OUTPUT)/$@ $<
+	$(CC) $(CFLAGS) -c -o $(DIR_OUTPUT)/$@ $<
 
 syslog.o: syslog.c
 	@mkdir -p $(DIR_OUTPUT)
 	$(CC) $(CFLAGS) -c -o $(DIR_OUTPUT)/$@ $<
 
 	
-%.o: $(DIR_SRC)/%.c
-	@mkdir -p $(DIR_OUTPUT)
-	$(CC) $(CFLAGS) -c -o $(DIR_OUTPUT)/$@ $<
-
-%: $(DIR_SRC)/%.c
-	$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< syserr.c -static -lpthread
+cmd_%: $(DIR_SRC)/cmd_%.c $(LIB_APUE)
+	$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
 
 clean:
 	@rm -f *.o *.a *.tmp
@@ -70,4 +61,17 @@ debug:
 cmd_targets:=cmd_%
 
 .PHONY: $(cmd_targets)
+
+#%.o: $(DIR_SRC)/%.c
+#	@mkdir -p $(DIR_OUTPUT)
+#	$(CC) $(CFLAGS) -c -o $(DIR_OUTPUT)/$@ $<
+
+build: $(LIB_APUE) $(FILES_OBJ) 
+	@echo "Generate command ..."
+	@mkdir -p $(DIR_BIN)
+	@for each_bin in $(FILES_BIN); do \
+		echo "Command:" $$each_bin; \
+		$(CC) $(DIR_OUTPUT)/$$each_bin.o $(DIR_OUTPUT)/syserr.o $(CFLAGS) -o $(DIR_BIN)/$$each_bin;\
+	done;
+
 
