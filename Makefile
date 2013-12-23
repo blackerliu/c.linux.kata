@@ -11,7 +11,7 @@ CFLAGS	+= $(EXTRA_CFLAGS)
 LDFLAGS += -static
 LDFLAGS += -L.
 LDFLAGS += -lapue
-LDFLAGS += -lc
+LDFLAGS += -lc -lpthread
 LDFLAGS	+= $(EXTRA_LDFLAGS)
 
 LIB_APUE=libapue.a
@@ -43,7 +43,7 @@ $(LIB_APUE): syserr.o syslog.o
 
 syserr.o: syserr.c
 	@mkdir -p $(DIR_OUTPUT)
-	$(CC) $(CFLAGS) -c -o $(DIR_OUTPUT)/$@ $<
+	$(CC) $(CFLAGS) -o $(DIR_OUTPUT)/$@ $<
 
 syslog.o: syslog.c
 	@mkdir -p $(DIR_OUTPUT)
@@ -53,6 +53,9 @@ syslog.o: syslog.c
 %.o: $(DIR_SRC)/%.c
 	@mkdir -p $(DIR_OUTPUT)
 	$(CC) $(CFLAGS) -c -o $(DIR_OUTPUT)/$@ $<
+
+%: $(DIR_SRC)/%.c
+	$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< syserr.c -static -lpthread
 
 clean:
 	@rm -f *.o *.a *.tmp
@@ -64,4 +67,7 @@ debug:
 	@echo "OBJ:" $(FILES_OBJ)
 	@echo "BIN:" $(FILES_BIN)
 
-#.PHONY cmd_ls
+cmd_targets:=cmd_%
+
+.PHONY: $(cmd_targets)
+
