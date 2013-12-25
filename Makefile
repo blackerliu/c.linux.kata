@@ -52,7 +52,7 @@ sock_%: $(DIR_SRC)/sock_%.c $(LIB_APUE)
 	@echo -e "Generate \e[032m$@\e[0m from source code"
 	@$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
 
-thrd_%: $(DIR_SRC)/thread_%.c $(LIB_APUE)
+thrd_%: $(DIR_SRC)/thrd_%.c $(LIB_APUE)
 	@echo -e "Generate \e[032m$@\e[0m from source code"
 	@$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
 
