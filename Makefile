@@ -1,7 +1,7 @@
 
 .PHONY: $(bin_targets)
 
-bin_targets:=cmd_% exc_% file_% sock_% thrd_% proc_%
+bin_targets:=cmd_% exc_% base_% tool_% file_% sock_% thrd_% proc_%
 
 
 CC	=$(CROSS_PREFIX)gcc
@@ -43,6 +43,15 @@ cmd_%: $(DIR_SRC)/cmd_%.c $(LIB_APUE)
 exc_%: $(DIR_SRC)/exc_%.c $(LIB_APUE)
 	@echo -e "Generate \e[032m$@\e[0m from source code"
 	$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
+
+base_%: $(DIR_SRC)/base_%.c $(LIB_APUE)
+	@echo -e "Generate \e[032m$@\e[0m from source code"
+	@$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
+
+
+tool_%: $(DIR_SRC)/tool_%.c $(LIB_APUE)
+	@echo -e "Generate \e[032m$@\e[0m from source code"
+	@$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
 
 file_%: $(DIR_SRC)/file_%.c $(LIB_APUE)
 	@echo -e "Generate \e[032m$@\e[0m from source code"
