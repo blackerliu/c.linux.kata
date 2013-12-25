@@ -91,6 +91,8 @@ static void log_doit(int errnoflag, int priority, const char *fmt, va_list ap)
     int     errno_save;
     char    buf[MAXLINE];
     
+    memset(buf, 0, MAXLINE);
+
     errno_save = errno;     /* value caller might want printed */
     vsnprintf(buf, MAXLINE, fmt, ap);
     if(errnoflag) {

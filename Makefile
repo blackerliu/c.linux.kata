@@ -73,7 +73,7 @@ syserr.o: syserr.c
 
 syslog.o: syslog.c
 	@mkdir -p $(DIR_OUTPUT)
-	$(CC) $(CFLAGS) -c -o $(DIR_OUTPUT)/$@ $<
+	$(CC) $(CFLAGS) -Wformat-security -c -o $(DIR_OUTPUT)/$@ $<
 
 clean:
 	@rm -f *.o *.a *.tmp
