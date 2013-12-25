@@ -1,7 +1,7 @@
 
 .PHONY: $(bin_targets)
 
-bin_targets:=cmd_% exc_%
+bin_targets:=cmd_% exc_% file_% sock_% thrd_% proc_%
 
 
 CC	=$(CROSS_PREFIX)gcc
@@ -41,7 +41,24 @@ cmd_%: $(DIR_SRC)/cmd_%.c $(LIB_APUE)
 	@$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
 
 exc_%: $(DIR_SRC)/exc_%.c $(LIB_APUE)
+	@echo -e "Generate \e[032m$@\e[0m from source code"
 	$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
+
+file_%: $(DIR_SRC)/file_%.c $(LIB_APUE)
+	@echo -e "Generate \e[032m$@\e[0m from source code"
+	@$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
+
+sock_%: $(DIR_SRC)/sock_%.c $(LIB_APUE)
+	@echo -e "Generate \e[032m$@\e[0m from source code"
+	@$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
+
+thrd_%: $(DIR_SRC)/thread_%.c $(LIB_APUE)
+	@echo -e "Generate \e[032m$@\e[0m from source code"
+	@$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
+
+proc_%: $(DIR_SRC)/proc_%.c $(LIB_APUE)
+	@echo -e "Generate \e[032m$@\e[0m from source code"
+	@$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
 
 
 obj_apue_with_path=$(foreach each_obj,$(OBJ_APUE),$(DIR_OUTPUT)/$(each_obj))
