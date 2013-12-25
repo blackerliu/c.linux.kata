@@ -34,6 +34,10 @@ FILES_SRC=$(shell cd src; ls *.c)
 FILES_OBJ=$(shell echo $(FILES_SRC) | sed 's/\.c/\.o/g')
 FILES_BIN=$(shell echo $(FILES_SRC) | sed 's/\.c//g')
 
+#prepare for bin and output directory
+$(shell mkdir -p $(DIR_BIN))
+$(shell mkdir -p $(DIR_OUTPUT))
+
 all: $(FILES_BIN)
 
 cmd_%: $(DIR_SRC)/cmd_%.c $(LIB_APUE)
@@ -77,16 +81,14 @@ $(LIB_APUE): syserr.o syslog.o
 	$(RANLIB) $@
 
 syserr.o: syserr.c
-	@mkdir -p $(DIR_OUTPUT)
 	$(CC) $(CFLAGS) -c -o $(DIR_OUTPUT)/$@ $<
 
 syslog.o: syslog.c
-	@mkdir -p $(DIR_OUTPUT)
-	$(CC) $(CFLAGS) -Wformat-security -c -o $(DIR_OUTPUT)/$@ $<
+	$(CC) $(CFLAGS) -c -o $(DIR_OUTPUT)/$@ $<
 
 clean:
 	@rm -f *.o *.a *.tmp
-	@rm -f $(DIR_BIN)/*
+	@rm -rf $(DIR_BIN)
 	@rm -rf $(DIR_OUTPUT)
 
 debug:
