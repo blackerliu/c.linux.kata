@@ -4,11 +4,11 @@
 bin_targets:=cmd_% exc_% base_% tool_% file_% sock_% thrd_% proc_%
 
 
-CC	=$(CROSS_PREFIX)gcc
-LD	=$(CROSS_PREFIX)ld
-AR	=$(CROSS_PREFIX)ar
-NM	=$(CROSS_PREFIX)nm
-RANLIB	=$(CROSS_PREFIX)ranlib
+CC	=$(CROSS)gcc
+LD	=$(CROSS)ld
+AR	=$(CROSS)ar
+NM	=$(CROSS)nm
+RANLIB	=$(CROSS)ranlib
 
 CFLAGS  += -I./include
 CFLAGS	+= $(EXTRA_CFLAGS)
@@ -37,6 +37,14 @@ FILES_BIN=$(shell echo $(FILES_SRC) | sed 's/\.c//g')
 #prepare for bin and output directory
 $(shell mkdir -p $(DIR_BIN))
 $(shell mkdir -p $(DIR_OUTPUT))
+
+help:
+	@echo "Usage:"
+	@echo "make help	- print this message"
+	@echo "make all        - build all source file"
+	@echo "make clean	- clean temp file"
+	@echo "make list	- list make target"
+	@echo ""
 
 all: $(FILES_BIN)
 
@@ -90,6 +98,10 @@ clean:
 	@rm -f *.o *.a *.tmp
 	@rm -rf $(DIR_BIN)
 	@rm -rf $(DIR_OUTPUT)
+
+list:
+	@echo "List bin targets:"
+	@for each_bin in $(FILES_BIN); do line=""; echo $$each_bin; done
 
 debug:
 	@echo "SRC:" $(FILES_SRC)

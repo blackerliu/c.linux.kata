@@ -17,15 +17,16 @@ void printfoo(const char *s, const struct foo *fp)
 
 void *thr_fn1(void *arg)
 {
-	struct foo foo = {1, 2, 3, 4};
-
+	static struct foo foo = {1, 2, 3, 4};
+	//struct foo foo = {1, 2, 3, 4};
+	
 	printfoo("thread 1:\n", &foo);
 	pthread_exit((void *) &foo);
 }
 
 void *thr_fn2(void *arg)
 {
-	printf("thread 2: ID is 0x%8x\n", pthread_self());
+	printf("thread 2: ID is 0x%8x\n", (unsigned int)pthread_self());
 	pthread_exit((void *)0);
 }
 
@@ -54,7 +55,7 @@ int main(void)
 	}
 	sleep(1);
 
-	printf("parent:\n",fp);
+	printfoo("parent:\n",fp);
 
 	exit(0);
 }

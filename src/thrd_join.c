@@ -1,10 +1,13 @@
 #include "apue.h"
 #include <pthread.h>
 
+#define THREAD1_DURATION_MS (5)
+#define THREAD2_DURATION_MS (8)
+
 void *thr_fn1(void *arg)
 {
-	printf("thread 1 will sleep 5ms\n");
-	sleep(5);
+	printf("thread 1 will sleep %d ms\n", THREAD1_DURATION_MS);
+	sleep(THREAD1_DURATION_MS);
 	printf("thread 1 wake up \n");
 
 	printf("thread 1 returning\n");
@@ -14,6 +17,10 @@ void *thr_fn1(void *arg)
 
 void *thr_fn2(void *arg)
 {
+	printf("thread 2 will sleep %d ms\n", THREAD2_DURATION_MS);
+	sleep(THREAD2_DURATION_MS);
+	printf("thread 2 wake up \n");
+
 	printf("thread 2 exiting\n");
 
 	pthread_exit((void *)2);
@@ -35,18 +42,20 @@ int main(void)
 		err_quit("can't create thread 2: %s\n", strerror(err));
 	}
 
+	printf("[main] join thread 1 \n");
 	err = pthread_join(tid1, &tret);
 	if(err !=0 ){
 		err_quit("can't join with thread 1: %s\n", strerror(err));
 	}
-	printf("thread 1 exit code %d\n", (int)tret);
+	printf("[main] thread 1 exit code %d\n", (int)tret);
 
 
+	printf("[main] join thread 2 \n");
 	err = pthread_join(tid2, &tret);
 	if(err != 0){
 		err_quit("can't join with thread 2: %s", strerror(err));
 	}
-	printf("thread 2 exit code %d\n", (int)tret);
+	printf("[main] thread 2 exit code %d\n", (int)tret);
 
 	exit(0);
 }
