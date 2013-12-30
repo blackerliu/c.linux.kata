@@ -21,7 +21,7 @@ LDFLAGS += -lapue
 LDFLAGS	+= $(EXTRA_LDFLAGS)
 
 LIB_APUE=libapue.a
-OBJ_APUE=syserr.o syslog.o
+OBJ_APUE=syserr.o syslog.o sysmisc.o
 
 LIB_CSPP=libcspp.a
 OBJ_CSPP=
@@ -84,14 +84,11 @@ proc_%: $(DIR_SRC)/proc_%.c $(LIB_APUE)
 
 obj_apue_with_path=$(foreach each_obj,$(OBJ_APUE),$(DIR_OUTPUT)/$(each_obj))
 
-$(LIB_APUE): syserr.o syslog.o
+$(LIB_APUE): $(OBJ_APUE)
 	$(AR) rcs $(LIB_APUE) $(obj_apue_with_path)
 	$(RANLIB) $@
 
-syserr.o: syserr.c
-	$(CC) $(CFLAGS) -c -o $(DIR_OUTPUT)/$@ $<
-
-syslog.o: syslog.c
+sys%.o: sys%.c
 	$(CC) $(CFLAGS) -c -o $(DIR_OUTPUT)/$@ $<
 
 clean:
