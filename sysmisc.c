@@ -2,7 +2,7 @@
 #include <syslog.h>
 #include <fcntl.h>
 #include <sys/resource.h>
-
+#include <pthread.h>
 
 void daemonize(const char *cmd)
 {
