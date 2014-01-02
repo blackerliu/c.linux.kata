@@ -50,7 +50,7 @@ all: $(FILES_BIN)
 
 excs_%: $(DIR_SRC)/excs_%.c $(LIB_APUE)
 	@echo -e "Generate \e[032m$@\e[0m from source code"
-	$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
+	@$(CC) $(CFLAGS) -o $(DIR_BIN)/$@ $< $(LDFLAGS)
 
 base_%: $(DIR_SRC)/base_%.c $(LIB_APUE)
 	@echo -e "Generate \e[032m$@\e[0m from source code"
